@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse, RedirectResponse
 import requests
 from bs4 import BeautifulSoup
@@ -9,6 +9,12 @@ import json
 from datetime import datetime, timedelta
 
 app = FastAPI(title="BaraBild Images Search API")
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    print(f"\n[{datetime.now()}] {request.method} {request.url}")
+    response = await call_next(request)
+    return response
 
 # Cache configuration
 CACHE_DIR = "./cache"
