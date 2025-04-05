@@ -1,6 +1,6 @@
 # BaraBild
 
-A simple web server that searches Getty Images website and returns the first image found as a direct link. Includes disk caching to improve performance and reduce requests to Getty Images.
+A simple web server that searches for images and returns the first image found as a direct link. Includes disk caching to improve performance and reduce requests.
 
 ## API
 
