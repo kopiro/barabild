@@ -1,6 +1,6 @@
-fastapi
-uvicorn
-requests
+fastapi==0.109.2
+uvicorn==0.27.1
+requests==2.31.0
 beautifulsoup4
 lxml
-python-dotenv 
+python-dotenv==1.0.1 
