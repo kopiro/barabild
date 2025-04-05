@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  getty-search:
+  barabild:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: getty-search
+    container_name: barabild
     ports:
       - "8000:8000"
     volumes:

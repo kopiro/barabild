@@ -8,7 +8,7 @@ import hashlib
 import json
 from datetime import datetime, timedelta
 
-app = FastAPI(title="Getty Images Search API")
+app = FastAPI(title="BaraBild Images Search API")
 
 # Cache configuration
 CACHE_DIR = "./cache"
@@ -63,7 +63,7 @@ def parse_html_for_image(html_content: str):
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to Getty Images Search API"}
+    return {"message": "Welcome to BaraBild Images Search API"}
 
 @app.get("/search/{query}")
 async def search_image(query: str):
