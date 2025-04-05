@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import RedirectResponse
 import requests
 from bs4 import BeautifulSoup
 import urllib.parse
@@ -35,12 +35,8 @@ def save_to_cache(query: str, html_content: str):
     """Save HTML content to cache"""
     ensure_cache_dir()
     cache_path = get_cache_path(query)
-    cache_data = {
-        "timestamp": datetime.now().isoformat(),
-        "html": html_content
-    }
     with open(cache_path, 'w', encoding='utf-8') as f:
-        json.dump(cache_data, f, ensure_ascii=False)
+        f.write(html_content)
 
 def load_from_cache(query: str) -> str:
     """Load HTML content from cache if available and not expired"""
@@ -48,16 +44,14 @@ def load_from_cache(query: str) -> str:
     if not os.path.exists(cache_path):
         return None
         
-    with open(cache_path, 'r', encoding='utf-8') as f:
-        cache_data = json.load(f)
-        
-    # Check if cache is expired
-    cache_time = datetime.fromisoformat(cache_data["timestamp"])
-    if datetime.now() - cache_time > CACHE_EXPIRY:
+    # Check if cache is expired using file modification time
+    mtime = os.path.getmtime(cache_path)
+    if datetime.now().timestamp() - mtime > CACHE_EXPIRY.total_seconds():
         os.remove(cache_path)  # Remove expired cache
         return None
         
-    return cache_data["html"]
+    with open(cache_path, 'r', encoding='utf-8') as f:
+        return f.read()
 
 def parse_html_for_image(html_content: str):
     """Parse HTML content to extract image information"""
